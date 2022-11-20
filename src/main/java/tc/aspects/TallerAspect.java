@@ -1,6 +1,8 @@
 package tc.aspects;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
@@ -24,8 +26,15 @@ public class TallerAspect {
 		System.out.println("Interceptado: " + jp.getSignature().toLongString() + " en " + jp.getSourceLocation().getLine());
 	}
 
+	/*
 	@Before("execution(* tc.aspects.data.*.get*(..)) && @annotation(tc.aspects.annotations.Auditable)")
 	public void point2(JoinPoint jp) throws Throwable{
 		System.out.println("Interceptado: " + jp.getSignature().toLongString() + " con valor " + jp.getArgs()[0]);
+	}
+	*/
+
+	@AfterReturning(value = "execution(* tc.aspects.data.*.get*(..)) && @annotation(tc.aspects.annotations.Auditable)", returning = "retVal")
+	public void point2(JoinPoint jp, Object retVal) throws Throwable{
+		System.out.println("Interceptado: " + jp.getSignature().toLongString() + " con valor " + retVal);
 	}
 }
